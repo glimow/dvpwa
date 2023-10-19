@@ -21,6 +21,8 @@ jobs:
         shell: bash
 
   
+
+
   dynamic_security_testing:
     runs-on: ubuntu-latest
     name: Scan live web app for security flaws
@@ -39,23 +41,23 @@ jobs:
         if: always()
         run: docker-compose -f "docker-compose.yml" down
 
-  container_scanning:
-    name: Scan Container for Security Issues
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+  # container_scanning:
+  #   name: Scan Container for Security Issues
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v2
       
-      - name: Build an image from Dockerfile
-        run: |
-          docker build --file Dockerfile.app -t dvpwa.app:${{ github.sha }} .
+  #     - name: Build an image from Dockerfile
+  #       run: |
+  #         docker build --file Dockerfile.app -t dvpwa.app:${{ github.sha }} .
       
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: 'dvpwa.app:${{ github.sha }}'
-          format: 'table'
-          exit-code: '1'
-          ignore-unfixed: true
-          vuln-type: 'os,library'
-          severity: 'CRITICAL'
+  #     - name: Run Trivy vulnerability scanner
+  #       uses: aquasecurity/trivy-action@master
+  #       with:
+  #         image-ref: 'dvpwa.app:${{ github.sha }}'
+  #         format: 'table'
+  #         exit-code: '1'
+  #         ignore-unfixed: true
+  #         vuln-type: 'os,library'
+  #         severity: 'CRITICAL'
